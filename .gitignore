@@ -179,3 +179,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# My Tools and App
+ffmpeg.exe
+ffprobe.exe
+yt-dlp.exe
+*.exe
+dist/
+build/
+*.spec
