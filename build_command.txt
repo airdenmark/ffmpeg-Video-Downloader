@@ -1,0 +1,1 @@
+python -m PyInstaller --noconsole --onefile --collect-all customtkinter --add-data "icon.ico;." --add-binary "yt-dlp.exe;." --add-binary "ffmpeg.exe;." --icon="icon.ico" --name "ffmpeg Video Downloader" --clean downloader.py
