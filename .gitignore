@@ -188,3 +188,4 @@ yt-dlp.exe
 dist/
 build/
 *.spec
+build_command.txt
