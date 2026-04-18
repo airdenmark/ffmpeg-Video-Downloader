@@ -5,7 +5,16 @@ import re
 import os
 import platform
 import sys
+import urllib.request
+import json
+import webbrowser
 from tkinter import Menu
+
+# --- APP INFO & UPDATER ---
+# Updated to v1.1.0 due to new features (Update checker & UI fixes)
+CURRENT_VERSION = "v1.1.0" 
+REPO_API_URL = "https://api.github.com/repos/airdenmark/ffmpeg-Video-Downloader/releases/latest"
+RELEASES_URL = "https://github.com/airdenmark/ffmpeg-Video-Downloader/releases/latest"
 
 # --- PORTABLE RESOURCE FINDER ---
 def resource_path(relative_path):
@@ -34,7 +43,7 @@ def get_download_path():
 # --- DYNAMIC PATHS ---
 YT_DLP_PATH = resource_path("yt-dlp.exe")
 FFMPEG_PATH = resource_path("ffmpeg.exe") 
-ICON_PATH = resource_path("icon.ico") # We'll look for an icon file inside the EXE
+ICON_PATH = resource_path("icon.ico") 
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -43,20 +52,22 @@ class DownloaderApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("ffmpeg Video Downloader")
-        self.geometry("550x380")
+        self.geometry("550x420") 
         
-        # Set the window icon (Wait 200ms to ensure window is ready)
+        # Set the window icon
         if os.path.exists(ICON_PATH):
             self.after(200, lambda: self.iconbitmap(ICON_PATH))
         
         self.download_dir = get_download_path()
         
+        # UI Elements
         self.label = ctk.CTkLabel(self, text="Paste link below:", font=("Segoe UI", 16, "bold"))
         self.label.pack(pady=(20, 10))
 
         self.entry = ctk.CTkEntry(self, width=420, placeholder_text="https://...")
         self.entry.pack(pady=10)
         
+        # Right-click context menu
         self.menu = Menu(self, tearoff=0)
         self.menu.add_command(label="Paste", command=self.paste_link)
         self.entry.bind("<Button-3>", self.show_menu)
@@ -74,8 +85,35 @@ class DownloaderApp(ctk.CTk):
 
         self.folder_button = ctk.CTkButton(self, text="Open Downloads Folder", command=self.open_downloads,
                                           fg_color="transparent", border_width=2, text_color="white",
-                                          state="disabled")
+                                          state="disabled", width=220)
         self.folder_button.pack(pady=10)
+
+        # --- UPDATE NOTIFICATION LABEL ---
+        self.update_label = ctk.CTkLabel(self, text="", font=("Segoe UI", 12, "underline"), text_color="#3498db", cursor="hand2")
+        self.update_label.pack(side="bottom", pady=(0, 15))
+        self.update_label.bind("<Button-1>", lambda e: webbrowser.open(RELEASES_URL))
+
+        # --- VERSION LABEL (Discrete in the bottom right corner) ---
+        self.version_label = ctk.CTkLabel(self, text=f"Version: {CURRENT_VERSION}", 
+                                         font=("Segoe UI", 10), text_color="gray")
+        self.version_label.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
+
+        # Start update check in background
+        threading.Thread(target=self.check_for_updates, daemon=True).start()
+
+    def check_for_updates(self):
+        try:
+            req = urllib.request.Request(REPO_API_URL, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=5) as response:
+                data = json.loads(response.read().decode())
+                latest_version = data.get("tag_name", "")
+                
+                if latest_version and latest_version != CURRENT_VERSION:
+                    self.after(0, lambda: self.update_label.configure(
+                        text=f"New update available ({latest_version}) Click here to download."
+                    ))
+        except Exception:
+            pass
 
     def show_menu(self, event):
         self.menu.post(event.x_root, event.y_root)
