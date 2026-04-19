@@ -23,11 +23,12 @@ A powerful, standalone GUI-based video downloader powered by `yt-dlp` and `ffmpe
 1. Go to the [Latest Release](https://github.com/airdenmark/ffmpeg-Video-Downloader/releases/latest).
 2. Download the `.zip` file (e.g., `ffmpeg.Video.Downloader.v1.1.1.zip`).
 3. Extract the contents to a folder of your choice.
-4. Run the `.exe` file to start downloading!
+4. **Pro Tip:** Right-click the `.exe` file, select **Properties**, check the **Unblock** box at the bottom, and click **OK**. This prevents Windows from asking for permission every time you run the app.
+5. Run the `.exe` file to start downloading!
 
 > [!IMPORTANT]
 > **Note on Windows SmartScreen:**
-> Because this is a new, independent application, Windows may show a warning. Click **"More info"** and then **"Run anyway"** to start the app. This is standard for independent, standalone software.
+> Because this is a new, independent application, Windows may show a warning. If you haven't "unblocked" the file as described above, click **"More info"** and then **"Run anyway"**.
 
 ## ⚙️ Technical Specifications & Core Components
 This application is compiled using the latest stable libraries to ensure maximum compatibility and speed.
