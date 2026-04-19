@@ -36,6 +36,6 @@ This application is compiled using the latest stable libraries to ensure maximum
 | Component | Version | Link |
 | :--- | :--- | :--- |
 | **yt-dlp** | 2026.3.17.0 | [View Project](https://github.com/yt-dlp/yt-dlp) |
-| **FFmpeg** | 2026-04-16 (Master) | [gyan.dev Builds](https://www.gyan.dev/ffmpeg/builds/) |
+| **FFmpeg** | 2026-04-16-git-5abc240a27 | [gyan.dev Builds](https://www.gyan.dev/ffmpeg/builds/) |
 | **Python** | 3.13 | [View Project](https://www.python.org/) |
 | **CustomTkinter** | v5.2.2 | [View Project](https://github.com/TomSchimansky/CustomTkinter) |
